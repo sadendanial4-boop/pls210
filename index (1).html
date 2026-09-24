@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Does Income Inequality Suppress Voter Turnout? — Research Proposal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0f1923;
+    --navy-mid: #162130;
+    --navy-light: #1e2f42;
+    --slate: #8da3b4;
+    --gold: #c9a84c;
+    --gold-dim: #a07a2a;
+    --white: #f0f4f7;
+    --white-dim: #b8c8d4;
+    --rule: rgba(141,163,180,0.18);
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  *, *::before, *::after { box-sizing: inherit; margin: 0; padding: 0; }
+  html { scroll-padding-top: calc(56px + env(safe-area-inset-top, 0px)); }
+  body {
+    background: var(--navy);
+    color: var(--white);
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    font-size: 17px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  nav {
+    position: sticky;
+    top: env(safe-area-inset-top, 0px);
+    z-index: 100;
+    background: rgba(15,25,35,0.94);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--rule);
+    padding: 0 2rem;
+    height: 56px;
+    display: flex;
+    align-items: center;
+  }
+  nav ul { display: flex; list-style: none; flex-wrap: wrap; overflow-x: auto; }
+  nav a {
+    display: block;
+    padding: 0 0.9rem;
+    height: 56px;
+    line-height: 56px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--slate);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color 0.2s;
+  }
+  nav a:hover { color: var(--white); }
+  nav a.active { color: var(--gold); border-bottom: 2px solid var(--gold); }
+
+  .container { max-width: 780px; margin: 0 auto; padding: 0 2rem; }
+
+  section { padding: 4rem 0 3rem; border-bottom: 1px solid var(--rule); }
+  section:last-of-type { border-bottom: none; }
+
+  #hero { padding: 6rem 0 5rem; border-bottom: 1px solid var(--rule); }
+
+  .eyebrow {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+  }
+  .hero-question {
+    font-family: 'Lora', serif;
+    font-size: clamp(1.6rem, 4vw, 2.5rem);
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--white);
+    max-width: 680px;
+    margin-bottom: 2rem;
+  }
+  .hero-question em { font-style: italic; color: var(--gold); }
+  .hero-meta { display: flex; flex-wrap: wrap; gap: 0.5rem 2rem; font-size: 13px; color: var(--slate); }
+  .hero-meta span::before { content: '— '; color: var(--gold-dim); }
+
+  h2 {
+    font-family: 'Lora', serif;
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.7rem;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  /* BULLET POINTS */
+  ul.points {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  ul.points li {
+    padding-left: 1.4rem;
+    position: relative;
+    color: var(--white-dim);
+    font-size: 0.97rem;
+    line-height: 1.6;
+  }
+  ul.points li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.62em;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--gold);
+  }
+  ul.points li strong { color: var(--white); font-weight: 500; }
+  ul.points li em { color: var(--gold); font-style: normal; }
+
+  /* HYPOTHESIS BOX */
+  .hypothesis {
+    background: var(--navy-light);
+    border-left: 3px solid var(--gold);
+    padding: 1.2rem 1.6rem;
+    margin: 1.5rem 0;
+    border-radius: 0 2px 2px 0;
+    font-family: 'Lora', serif;
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--white);
+  }
+
+  /* CAUSAL MODEL */
+  .model-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    margin: 1.5rem 0;
+  }
+  .model-cell { background: var(--navy-mid); padding: 1.2rem 1.4rem; }
+  .model-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+  }
+  .model-value { font-size: 0.9rem; color: var(--white); line-height: 1.5; }
+  .model-sub { color: var(--slate); font-size: 0.82rem; }
+
+  /* SOURCE LIST */
+  .source-list { list-style: none; margin: 0; padding: 0; }
+  .source-list li {
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--rule);
+    display: grid;
+    grid-template-columns: 2rem 1fr;
+    gap: 0 1rem;
+    align-items: start;
+  }
+  .source-list li:last-child { border-bottom: none; }
+  .source-num { font-family: 'Lora', serif; font-size: 1rem; color: var(--gold-dim); font-weight: 600; padding-top: 0.05rem; }
+  .source-ref { font-size: 0.9rem; color: var(--white); font-weight: 400; margin-bottom: 0.2rem; }
+  .source-note { font-size: 0.83rem; color: var(--slate); line-height: 1.5; }
+
+  /* TRANSPARENCY */
+  .transparency {
+    background: rgba(201,168,76,0.06);
+    border: 1px solid rgba(201,168,76,0.2);
+    padding: 1.4rem 1.6rem;
+  }
+  .transparency ul.points li { font-size: 0.9rem; }
+
+  /* REFLECTION */
+  #reflection { background: var(--navy-mid); }
+  .reflection-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    margin-top: 1.2rem;
+  }
+  .reflection-col { background: var(--navy); padding: 1.4rem 1.6rem; }
+  .reflection-col h3 { font-family: 'Lora', serif; font-size: 0.9rem; color: var(--gold); margin-bottom: 0.8rem; font-weight: 600; }
+  .tag { font-size: 10px; letter-spacing: 0.08em; color: var(--slate); text-transform: uppercase; margin-bottom: 1.2rem; display: block; }
+
+  @media (max-width: 600px) {
+    .reflection-cols, .model-grid { grid-template-columns: 1fr; }
+    nav { padding: 0 1rem; }
+    .container { padding: 0 1.2rem; }
+    section { padding: 3rem 0 2.5rem; }
+    #hero { padding: 4rem 0 3.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <ul>
+    <li><a href="#question">Question</a></li>
+    <li><a href="#positioning">Positioning</a></li>
+    <li><a href="#contribution">Contribution</a></li>
+    <li><a href="#literature">Literature</a></li>
+    <li><a href="#theory">Theory</a></li>
+    <li><a href="#transparency">AI</a></li>
+    <li><a href="#reflection">Reflection</a></li>
+  </ul>
+</nav>
+
+<div id="hero">
+  <div class="container">
+    <p class="eyebrow">Political Science Research Methods — Proposal Part I</p>
+    <h1 class="hero-question">Does income inequality reduce voter turnout among low-income citizens in U.S. states, <em>2000–2020</em>?</h1>
+    <div class="hero-meta">
+      <span>Positivist</span>
+      <span>U.S. state-level comparison</span>
+      <span>5 presidential election cycles</span>
+    </div>
+  </div>
+</div>
+
+<!-- RESEARCH QUESTION -->
+<section id="question">
+  <div class="container">
+    <h2>Research Question</h2>
+    <ul class="points">
+      <li><strong>Empirical:</strong> asks about a measurable relationship, not what ought to happen</li>
+      <li><strong>Population:</strong> low-income citizens (bottom income quintile)</li>
+      <li><strong>Context:</strong> U.S. states as units of comparison</li>
+      <li><strong>Time:</strong> five presidential elections, 2000–2020</li>
+      <li><strong>Answerable:</strong> Gini coefficients from the American Community Survey; turnout by income from the Current Population Survey Voting Supplement — both free and public</li>
+    </ul>
+  </div>
+</section>
+
+<!-- POSITIONING -->
+<section id="positioning">
+  <div class="container">
+    <h2>Epistemological Positioning — Positivist</h2>
+    <ul class="points">
+      <li>Social reality exists independently of the researcher and can be measured</li>
+      <li>Knowledge comes from testing <strong>falsifiable hypotheses</strong> against data</li>
+      <li>Goal: identify generalisable patterns across states and elections</li>
+      <li>Fits this question because both variables — inequality and turnout — are <strong>quantifiable and consistently measured</strong> across all 50 states</li>
+      <li>Interpretivist would be needed only if the question asked how citizens <em>experience</em> their decision not to vote — this one does not</li>
+    </ul>
+  </div>
+</section>
+
+<!-- CONTRIBUTION -->
+<section id="contribution">
+  <div class="container">
+    <h2>Contribution</h2>
+    <ul class="points">
+      <li>Most studies measure <strong>aggregate</strong> turnout — all income groups combined — which masks who is actually being demobilised</li>
+      <li>This study isolates the <em>bottom income quintile</em> for a more precise test</li>
+      <li>State-level panel across five elections allows fixed-effects controls for time-stable state factors</li>
+      <li>Core contribution: <strong>methodological precision</strong> on a well-theorised but bluntly-measured relationship</li>
+    </ul>
+  </div>
+</section>
+
+<!-- LITERATURE -->
+<section id="literature">
+  <div class="container">
+    <h2>Literature Review</h2>
+    <ul class="source-list">
+      <li>
+        <span class="source-num">1</span>
+        <div>
+          <p class="source-ref">Verba, Schlozman &amp; Brady — <em>Voice and Equality</em> (1995)</p>
+          <p class="source-note">Civic Voluntarism Model: participation depends on time, money, and civic skills. Low-income citizens are disadvantaged on all three. → provides the causal mechanism.</p>
+        </div>
+      </li>
+      <li>
+        <span class="source-num">2</span>
+        <div>
+          <p class="source-ref">Solt — "Economic Inequality and Democratic Political Engagement" (2008)</p>
+          <p class="source-note">Cross-national evidence: higher inequality → lower voting among the non-wealthy. Demobilising effect strongest at the bottom of the income distribution. → closest empirical predecessor.</p>
+        </div>
+      </li>
+      <li>
+        <span class="source-num">3</span>
+        <div>
+          <p class="source-ref">Leighley &amp; Nagler — <em>Who Votes Now?</em> (2014)</p>
+          <p class="source-note">Documents the persistent income–turnout gap in U.S. elections 1972–2008. The gap has not narrowed despite rising education. → justifies studying 2000–2020.</p>
+        </div>
+      </li>
+      <li>
+        <span class="source-num">4</span>
+        <div>
+          <p class="source-ref">Lijphart — "Unequal Participation" (1997)</p>
+          <p class="source-note">Low-income non-voting as a democratic problem: less participation → policy favours the wealthy → deeper inequality → less participation. → frames the normative stakes.</p>
+        </div>
+      </li>
+      <li>
+        <span class="source-num">5</span>
+        <div>
+          <p class="source-ref">Meltzer &amp; Richard — "A Rational Theory of the Size of Government" (1981)</p>
+          <p class="source-note">Classical model: higher inequality should <em>increase</em> redistribution demand among median voters, mobilising the poor. Used here as a foil — the observed demobilisation is the puzzle.</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- THEORY -->
+<section id="theory">
+  <div class="container">
+    <h2>Theory and Hypotheses</h2>
+
+    <div class="hypothesis">
+      H1: U.S. states with higher income inequality (Gini coefficient) will show lower voter turnout among citizens in the bottom income quintile in presidential elections, controlling for state electoral laws, racial composition, and urbanisation.
+    </div>
+
+    <div class="model-grid">
+      <div class="model-cell">
+        <p class="model-label">Independent Variable</p>
+        <p class="model-value">State-level Gini coefficient<br><span class="model-sub">U.S. Census / ACS — per election year</span></p>
+      </div>
+      <div class="model-cell">
+        <p class="model-label">Causal Mechanism</p>
+        <p class="model-value">Resource deprivation — inequality reduces time, money &amp; civic skills, raising the cost of participation for low-income citizens</p>
+      </div>
+      <div class="model-cell">
+        <p class="model-label">Dependent Variable</p>
+        <p class="model-value">Turnout rate, bottom income quintile<br><span class="model-sub">Current Population Survey Voting Supplement</span></p>
+      </div>
+    </div>
+
+    <ul class="points">
+      <li><strong>Framework:</strong> Civic Voluntarism Model (Verba et al. 1995) — participation = f(time, money, civic skills)</li>
+      <li><strong>Falsifiable:</strong> no significant effect after controls → mechanism not supported</li>
+    </ul>
+  </div>
+</section>
+
+<!-- AI TRANSPARENCY -->
+<section id="transparency">
+  <div class="container">
+    <h2>AI Transparency Statement</h2>
+    <div class="transparency">
+      <ul class="points">
+        <li>Used <strong>Claude (Anthropic)</strong> to develop the research question — described my interests, chose from three suggested topics</li>
+        <li>Claude helped structure the IV/DV, identify sources, and draft section texts</li>
+        <li>I verified every source independently and confirmed I can explain each one</li>
+        <li>Claude wrote the HTML/CSS for this page; I reviewed and edited all content</li>
+        <li>All analytical choices were accepted only after I understood and agreed with the reasoning</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- REFLECTION -->
+<section id="reflection">
+  <div class="container">
+    <h2>What Working with AI Helped Me Understand — and What I Still Don't</h2>
+    <span class="tag">Ungraded — shows where my thinking is</span>
+    <div class="reflection-cols">
+      <div class="reflection-col">
+        <h3>What became clearer</h3>
+        <ul class="points">
+          <li>Why IV/DV precision matters — "inequality affects voting" is too vague; the mechanism must be specified</li>
+          <li>Why Meltzer-Richard makes the puzzle interesting — the poor <em>should</em> be mobilised, so demobilisation needs explaining</li>
+          <li>Why positivism fits — the question is about aggregate measurable behaviour, not individual interpretation</li>
+        </ul>
+      </div>
+      <div class="reflection-col">
+        <h3>What I still find uncertain</h3>
+        <ul class="points">
+          <li>How to run and interpret a fixed-effects model in practice</li>
+          <li>How to handle reverse causality — does inequality suppress turnout, or does low turnout enable inequality-deepening policy?</li>
+          <li>What instrumental variable approaches are and whether they would help here</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const sections = document.querySelectorAll('section[id], div[id="hero"]');
+  const navLinks = document.querySelectorAll('nav a');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(a => a.classList.remove('active'));
+        const active = document.querySelector(`nav a[href="#${entry.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-30% 0px -60% 0px' });
+  sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
